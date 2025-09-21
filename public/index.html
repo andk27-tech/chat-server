@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>채팅 테스트</title>
+</head>
+<body>
+  <h1>💬 채팅 테스트</h1>
+  <input id="from" placeholder="보내는 사람">
+  <input id="to" placeholder="받는 사람">
+  <input id="text" placeholder="메시지">
+  <button onclick="sendMessage()">보내기</button>
+  <pre id="log"></pre>
+
+  <script>
+    async function sendMessage() {
+      const from = document.getElementById('from').value;
+      const to = document.getElementById('to').value;
+      const text = document.getElementById('text').value;
+
+      const res = await fetch('/message', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ from, to, text })
+      });
+
+      const data = await res.json();
+      document.getElementById('log').textContent = JSON.stringify(data, null, 2);
+    }
+  </script>
+</body>
+</html>
