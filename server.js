@@ -1,12 +1,17 @@
 const express = require("express");
 const app = express();
+const path = require("path"); // 추가
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
+// 👉 이 줄 추가: public 폴더 내 HTML 파일 정적 서빙
+app.use(express.static(path.join(__dirname, 'public')));
+
+
 // 기본 페이지
 app.get("/", (req, res) => {
-    res.send("🚀 Render 서버 정상 동작 중!");
+    res.sendFile(path.join(__dirname, 'public/index.html')); // 수정
 });
 
 // 메시지 전송 API

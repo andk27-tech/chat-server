@@ -1,16 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>채팅 테스트</title>
+  <title>비밀 채팅방</title>
+  <style>
+    body { font-family: Arial; margin: 40px; }
+    input, button { margin: 5px; padding: 8px; }
+    #log { margin-top: 20px; white-space: pre; background: #f0f0f0; padding: 10px; border-radius: 5px; }
+  </style>
 </head>
 <body>
-  <h1>💬 채팅 테스트</h1>
-  <input id="from" placeholder="보내는 사람">
+  <h1>💬 비밀 채팅</h1>
+  <input id="from" placeholder="보낸 사람">
   <input id="to" placeholder="받는 사람">
-  <input id="text" placeholder="메시지">
-  <button onclick="sendMessage()">보내기</button>
-  <pre id="log"></pre>
+  <input id="text" placeholder="메시지 내용">
+  <button onclick="sendMessage()">메시지 보내기</button>
+
+  <div id="log"></div>
 
   <script>
     async function sendMessage() {
@@ -18,14 +24,14 @@
       const to = document.getElementById('to').value;
       const text = document.getElementById('text').value;
 
-      const res = await fetch('/message', {
+      const response = await fetch('/message', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ from, to, text })
       });
 
-      const data = await res.json();
-      document.getElementById('log').textContent = JSON.stringify(data, null, 2);
+      const result = await response.json();
+      document.getElementById('log').textContent = JSON.stringify(result, null, 2);
     }
   </script>
 </body>
