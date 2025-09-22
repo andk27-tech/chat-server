@@ -2,36 +2,111 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>비밀 채팅방</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>chat</title>
   <style>
-    body { font-family: Arial; margin: 40px; }
-    input, button { margin: 5px; padding: 8px; }
-    #log { margin-top: 20px; white-space: pre; background: #f0f0f0; padding: 10px; border-radius: 5px; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f5f5;
+    }
+
+    .chat-container {
+      max-width: 400px;
+      margin: auto;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #ddd;
+      background: #fff;
+    }
+
+    .chat-header {
+      background: #ff6f0f;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .message {
+      max-width: 70%;
+      margin: 5px 0;
+      padding: 10px;
+      border-radius: 12px;
+      line-height: 1.4;
+    }
+
+    .message.you {
+      background: #eee;
+      align-self: flex-start;
+    }
+
+    .message.me {
+      background: #ffebd7;
+      align-self: flex-end;
+    }
+
+    .chat-input {
+      display: flex;
+      border-top: 1px solid #ddd;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      outline: none;
+    }
+
+    .chat-input button {
+      padding: 10px 15px;
+      border: none;
+      background: #ff6f0f;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
-  <h1>💬 비밀 채팅</h1>
-  <input id="from" placeholder="보낸 사람">
-  <input id="to" placeholder="받는 사람">
-  <input id="text" placeholder="메시지 내용">
-  <button onclick="sendMessage()">메시지 보내기</button>
-
-  <div id="log"></div>
+  <div class="chat-container">
+    <div class="chat-header">🥕 당근톡</div>
+    <div class="chat-messages" id="messages">
+      <div class="message you">안녕하세요! 아직 판매 중이신가요?</div>
+      <div class="message me">네, 가능합니다 😀</div>
+    </div>
+    <div class="chat-input">
+      <input type="text" id="msgInput" placeholder="메시지를 입력하세요..." />
+      <button onclick="sendMessage()">전송</button>
+    </div>
+  </div>
 
   <script>
-    async function sendMessage() {
-      const from = document.getElementById('from').value;
-      const to = document.getElementById('to').value;
-      const text = document.getElementById('text').value;
+    function sendMessage() {
+      const input = document.getElementById("msgInput");
+      const text = input.value.trim();
+      if (!text) return;
 
-      const response = await fetch('/message', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ from, to, text })
-      });
+      const msgBox = document.createElement("div");
+      msgBox.className = "message me";
+      msgBox.innerText = text;
 
-      const result = await response.json();
-      document.getElementById('log').textContent = JSON.stringify(result, null, 2);
+      document.getElementById("messages").appendChild(msgBox);
+      input.value = "";
+
+      // 스크롤 맨 아래로
+      const messages = document.getElementById("messages");
+      messages.scrollTop = messages.scrollHeight;
     }
   </script>
 </body>
